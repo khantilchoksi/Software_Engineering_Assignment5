@@ -1,0 +1,44 @@
+---
+- hosts: all
+
+  tasks:
+   - name: Install NodeJS
+     apt: 
+      name: nodejs-legacy
+      state: latest
+      update_cache: yes
+     become: yes
+
+   - name: Install npm (to further install forever and NodeJS programs)
+     apt:
+      name: npm 
+      state: latest
+      update_cache: yes
+     become: yes
+
+   - name: Install Forever to run our NodeJS app.
+     shell: npm install -g forever
+     become: yes
+
+   - name: Install git
+     apt:
+      name: git
+      state: latest
+      update_cache: yes
+     become: yes
+
+   - name: Cloning a git repo to specified destination
+     git:
+      repo: https://github.com/CSC-DevOps/App
+      dest: /home/devops_repo
+      clone: yes
+     become: yes
+
+   - name: Install packages based on package.json (using the npm)
+     npm:
+      path: /home/devops_repo
+     become: yes
+
+
+
+

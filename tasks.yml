@@ -1,0 +1,30 @@
+---
+- hosts: all
+
+  tasks:
+   - name: Run app
+     command: forever start /home/devops_repo/main.js 4394
+     become: yes
+
+   - name: Security Tasks
+     apt:
+      name: '{{ item }}'
+      state: latest
+     with_items:
+       - ssh
+       - openssl
+       - openssh-client
+       - openssh-server
+     become: yes
+
+   - name: Remove Files
+     become: yes
+     file:
+      state: "{{ item }}"
+      path: "/tmp/"
+     with_items:
+      - absent
+      - directory
+
+
+
